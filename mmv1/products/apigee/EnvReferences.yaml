@@ -33,6 +33,8 @@ examples:
   - !ruby/object:Provider::Terraform::Examples
     name: 'apigee_environment_reference_test'
     primary_resource_id: 'apigee_environment_reference'
+    vars:
+      network_name: 'apigee-network'
     test_env_vars:
       org_id: :ORG_ID
       billing_account: :BILLING_ACCT

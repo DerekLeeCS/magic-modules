@@ -79,7 +79,7 @@ resource "google_project_service" "compute" {
 }
 
 resource "google_compute_network" "apigee_network" {
-  name       = "apigee-network"
+  name       = "tf-test-apigee-network%{random_suffix}"
   project    = google_project.project.project_id
   depends_on = [google_project_service.compute]
 }
@@ -200,7 +200,7 @@ resource "google_project_service" "compute" {
 }
 
 resource "google_compute_network" "apigee_network" {
-  name       = "apigee-network"
+  name       = "tf-test-apigee-apigee-network%{random_suffix}"
   project    = google_project.project.project_id
   depends_on = [google_project_service.compute]
 }

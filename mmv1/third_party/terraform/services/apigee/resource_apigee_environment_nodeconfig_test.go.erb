@@ -89,7 +89,7 @@ resource "google_project_service" "kms" {
 resource "google_compute_network" "apigee_network" {
   provider = google-beta
 
-  name       = "apigee-network"
+  name       = "tf-test-apigee-network%{random_suffix}"
   project    = google_project.project.project_id
   depends_on = [google_project_service.compute]
 }

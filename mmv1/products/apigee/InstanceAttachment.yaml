@@ -61,6 +61,8 @@ examples:
   - !ruby/object:Provider::Terraform::Examples
     name: 'apigee_instance_attachment_basic_test'
     primary_resource_id: 'apigee_instance_attachment'
+    vars:
+      network_name: 'apigee-network'
     test_env_vars:
       org_id: :ORG_ID
       billing_account: :BILLING_ACCT

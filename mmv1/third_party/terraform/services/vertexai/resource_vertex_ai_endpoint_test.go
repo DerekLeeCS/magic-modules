@@ -18,7 +18,7 @@ func TestAccVertexAIEndpoint_vertexAiEndpointNetwork(t *testing.T) {
 	context := map[string]interface{}{
 		"endpoint_name": fmt.Sprint(acctest.RandInt(t) % 9999999999),
 		"kms_key_name":  acctest.BootstrapKMSKeyInLocation(t, "us-central1").CryptoKey.Name,
-		"network_name":  acctest.BootstrapSharedTestNetwork(t, "vertex-ai-endpoint-update"),
+		"network_name":  "tf-test-" + acctest.RandString(t, 10),
 		"random_suffix": acctest.RandString(t, 10),
 	}
 
@@ -60,7 +60,7 @@ resource "google_vertex_ai_endpoint" "endpoint" {
   labels       = {
     label-one = "value-one"
   }
-  network      = "projects/${data.google_project.project.number}/global/networks/${data.google_compute_network.vertex_network.name}"
+  network      = "projects/${data.google_project.project.number}/global/networks/${google_compute_network.vertex_network.name}"
   encryption_spec {
     kms_key_name = "%{kms_key_name}"
   }
@@ -70,7 +70,7 @@ resource "google_vertex_ai_endpoint" "endpoint" {
 }
 
 resource "google_service_networking_connection" "vertex_vpc_connection" {
-  network                 = data.google_compute_network.vertex_network.id
+  network                 = google_compute_network.vertex_network.id
   service                 = "servicenetworking.googleapis.com"
   reserved_peering_ranges = [google_compute_global_address.vertex_range.name]
 }
@@ -80,10 +80,10 @@ resource "google_compute_global_address" "vertex_range" {
   purpose       = "VPC_PEERING"
   address_type  = "INTERNAL"
   prefix_length = 24
-  network       = data.google_compute_network.vertex_network.id
+  network       = google_compute_network.vertex_network.id
 }
 
-data "google_compute_network" "vertex_network" {
+resource "google_compute_network" "vertex_network" {
   name       = "%{network_name}"
 }
 
@@ -108,7 +108,7 @@ resource "google_vertex_ai_endpoint" "endpoint" {
   labels       = {
     label-two = "value-two"
   }
-  network      = "projects/${data.google_project.project.number}/global/networks/${data.google_compute_network.vertex_network.name}"
+  network      = "projects/${data.google_project.project.number}/global/networks/${google_compute_network.vertex_network.name}"
   encryption_spec {
     kms_key_name = "%{kms_key_name}"
   }
@@ -118,7 +118,7 @@ resource "google_vertex_ai_endpoint" "endpoint" {
 }
 
 resource "google_service_networking_connection" "vertex_vpc_connection" {
-  network                 = data.google_compute_network.vertex_network.id
+  network                 = google_compute_network.vertex_network.id
   service                 = "servicenetworking.googleapis.com"
   reserved_peering_ranges = [google_compute_global_address.vertex_range.name]
 }
@@ -128,10 +128,10 @@ resource "google_compute_global_address" "vertex_range" {
   purpose       = "VPC_PEERING"
   address_type  = "INTERNAL"
   prefix_length = 24
-  network       = data.google_compute_network.vertex_network.id
+  network       = google_compute_network.vertex_network.id
 }
 
-data "google_compute_network" "vertex_network" {
+resource "google_compute_network" "vertex_network" {
   name       = "%{network_name}"
 }
 
